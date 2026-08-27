@@ -103,7 +103,12 @@ def notify_started(strategies: tuple[str, ...], market_slug_contains: str) -> bo
 
 def notify_trade_opened(strategy_id: str, market_slug: str, side: str, stake: float,
                          entry_price: float, net_edge: float | None) -> bool:
-    edge_str = f"{net_edge:+.1%}" if net_edge is not None else "n/a"
+    # net_edge is signed toward "Up" (see engine/decision_engine.py) — a
+    # BUY_DOWN trade is triggered by a strongly NEGATIVE net_edge, so
+    # showing that raw signed number here would misleadingly read as "the
+    # bot traded on bad edge" for every single Down trade. `side` already
+    # states the direction, so this shows the magnitude only.
+    edge_str = f"{abs(net_edge):.1%}" if net_edge is not None else "n/a"
     return send(
         f"📈 <b>Trade opened</b> [{strategy_id}]\n"
         f"{market_slug}\n"

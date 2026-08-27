@@ -122,6 +122,21 @@ class TestSendWhenEnabled(unittest.TestCase):
         text = mock_post.call_args.kwargs["json"]["text"]
         self.assertIn("n/a", text)
 
+    def test_notify_trade_opened_shows_magnitude_not_signed_value_for_buy_down(self):
+        # Regression test for a real live-confirmed bug: net_edge is signed
+        # toward "Up" (see engine/decision_engine.py's decide()) — a
+        # BUY_DOWN trade is triggered by a strongly NEGATIVE net_edge (e.g.
+        # -0.114 for a real trade seen live), which is the CORRECT, healthy
+        # trigger condition, not a costs-exceeding-edge problem. Showing
+        # that raw signed "-11.4%" next to "BUY_DOWN" reads backwards — as
+        # if the bot traded on bad edge. The message must show the
+        # magnitude only; direction is already conveyed by `side`.
+        with patch("alerting.telegram_notify.requests.post", return_value=_FakeResponse(200)) as mock_post:
+            telegram_notify.notify_trade_opened("B", "slug", "BUY_DOWN", 30.0, 0.770, -0.114)
+        text = mock_post.call_args.kwargs["json"]["text"]
+        self.assertIn("11.4%", text)
+        self.assertNotIn("-11.4%", text)
+
 
 if __name__ == "__main__":
     unittest.main()
