@@ -1,0 +1,17 @@
+# Secrets — never commit these
+.env
+deploy/telegram.env
+
+# Local Python env / caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Runtime data / generated output — regenerated per-machine, not shared code
+bot_state.sqlite3
+bot.log
+*.log
+dashboard.html
+report.txt
+analysis/

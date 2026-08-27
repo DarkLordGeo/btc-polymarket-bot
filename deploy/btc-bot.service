@@ -1,0 +1,38 @@
+[Unit]
+Description=btc-polymarket-bot (paper trading)
+After=network-online.target
+Wants=network-online.target
+# On failure, kick off the crash-alert unit below — independent of this
+# process, so it fires even if the crash is something as fundamental as a
+# broken venv or a syntax error that never lets main.py's own except-block
+# run.
+OnFailure=btc-bot-crash-alert.service
+
+# If it fails this many times within this window, systemd stops trying to
+# restart it (goes to a final "failed" state) instead of crash-looping
+# forever — you'll still get exactly one more OnFailure alert when that
+# happens, and recurring scheduled Claude check-ins (separate from this
+# file) are the backstop for noticing and fixing a bot that's stayed down.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=mr_ergeshidze
+WorkingDirectory=/home/mr_ergeshidze/btc_bot
+EnvironmentFile=/home/mr_ergeshidze/btc_bot/telegram.env
+ExecStart=/home/mr_ergeshidze/btc_bot/.venv/bin/python main.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Light sandboxing — this process only needs outbound HTTPS/WSS and its own
+# working directory, nothing else on the box.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/home/mr_ergeshidze/btc_bot
+
+[Install]
+WantedBy=multi-user.target

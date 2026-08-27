@@ -1,0 +1,10 @@
+[Unit]
+Description=Telegram alert for btc-bot.service failure
+# Deliberately NOT `PartOf=btc-bot.service` or similar — this must be able
+# to run standalone, triggered purely by btc-bot.service's OnFailure=,
+# independent of that service's own state.
+
+[Service]
+Type=oneshot
+EnvironmentFile=/home/mr_ergeshidze/btc_bot/telegram.env
+ExecStart=/home/mr_ergeshidze/btc_bot/deploy/telegram_alert.sh
