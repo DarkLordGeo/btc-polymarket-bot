@@ -19,9 +19,9 @@ StartLimitBurst=5
 [Service]
 Type=simple
 User=mr_ergeshidze
-WorkingDirectory=/home/mr_ergeshidze/btc_bot
-EnvironmentFile=/home/mr_ergeshidze/btc_bot/telegram.env
-ExecStart=/home/mr_ergeshidze/btc_bot/.venv/bin/python main.py
+WorkingDirectory=/home/mr_ergeshidze/btc-polymarket-bot
+EnvironmentFile=/home/mr_ergeshidze/btc-polymarket-bot/telegram.env
+ExecStart=/home/mr_ergeshidze/btc-polymarket-bot/.venv/bin/python main.py
 Restart=always
 RestartSec=10
 StandardOutput=journal
@@ -32,7 +32,7 @@ StandardError=journal
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
-ReadWritePaths=/home/mr_ergeshidze/btc_bot
+ReadWritePaths=/home/mr_ergeshidze/btc-polymarket-bot
 
 [Install]
 WantedBy=multi-user.target

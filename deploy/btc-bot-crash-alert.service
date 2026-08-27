@@ -6,5 +6,5 @@ Description=Telegram alert for btc-bot.service failure
 
 [Service]
 Type=oneshot
-EnvironmentFile=/home/mr_ergeshidze/btc_bot/telegram.env
-ExecStart=/home/mr_ergeshidze/btc_bot/deploy/telegram_alert.sh
+EnvironmentFile=/home/mr_ergeshidze/btc-polymarket-bot/telegram.env
+ExecStart=/home/mr_ergeshidze/btc-polymarket-bot/deploy/telegram_alert.sh

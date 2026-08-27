@@ -10,7 +10,7 @@
 # never lets the Python process reach its own except-block.
 set -euo pipefail
 
-ENV_FILE="${ENV_FILE:-/home/mr_ergeshidze/btc_bot/telegram.env}"
+ENV_FILE="${ENV_FILE:-/home/mr_ergeshidze/btc-polymarket-bot/telegram.env}"
 if [ -f "$ENV_FILE" ]; then
   # shellcheck disable=SC1090
   source "$ENV_FILE"
